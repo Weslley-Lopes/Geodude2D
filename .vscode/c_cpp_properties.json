@@ -1,0 +1,27 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/src/**",
+                "${workspaceFolder}/src/mesh_interface/**",
+                "${workspaceFolder}/examples/**",
+                "${workspaceFolder}/include/**",
+                "${workspaceFolder}/external_libraries/**",
+                "${workspaceFolder}/external_libraries/triangle/**",
+                "${workspaceFolder}/external_libraries/tetgen/**",
+                "${env:PETSC_DIR}/include/**",
+                "${env:PETSC_DIR}/arch-linux2-c-debug/include",
+                "${env:PETSC_DIR}/arch-linux2-c-opt/include"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "clang-x64",
+            "configurationProvider": "vector-of-bool.cmake-tools"
+        }
+    ],
+    "version": 4
+}
