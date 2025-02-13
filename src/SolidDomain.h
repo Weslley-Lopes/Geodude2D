@@ -121,6 +121,8 @@ private:
 
 	void exportToParaview(const int &step);
 
+	void abrirParaView(ParaViewInitMode mode, const std::string& pasta);
+
 	void readInput(const std::string &inputFile, const bool &deleteFiles, const PartitionOfUnity elementType);
 
 	void transferGeometricBoundaryConditions();
