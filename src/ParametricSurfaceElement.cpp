@@ -8,7 +8,7 @@ ParametricSurfaceElement ParametricSurfaceElement::Q9(PartitionOfUnity::Q9);
 ParametricSurfaceElement ParametricSurfaceElement::Q16(PartitionOfUnity::Q16);
 
 ParametricSurfaceElement::ParametricSurfaceElement(const PartitionOfUnity elementType)
-    :ParametricElement(elementType)
+    : ParametricElement(elementType)
 {
     double **xsi, *weight;
     switch (elementType)
@@ -77,7 +77,7 @@ ParametricSurfaceElement::ParametricSurfaceElement(const PartitionOfUnity elemen
         edgeVertices_ = {{0, 1}, {1, 2}, {2, 3}, {3, 0}};
         double **xsi_aux, *weight_aux;
         quadratures::lineQuadrature(numberOfQuadraturePoints_aux, xsi_aux, weight_aux);
-        xsi = new double*[numberOfQuadraturePoints_];
+        xsi = new double *[numberOfQuadraturePoints_];
         for (int i = 0; i < numberOfQuadraturePoints_; i++)
         {
             xsi[i] = new double[2];
@@ -118,7 +118,7 @@ ParametricSurfaceElement::ParametricSurfaceElement(const PartitionOfUnity elemen
         edgeVertices_ = {{0, 1}, {1, 2}, {2, 3}, {3, 0}};
         double **xsi_aux, *weight_aux;
         quadratures::lineQuadrature(numberOfQuadraturePoints_aux, xsi_aux, weight_aux);
-        xsi = new double*[numberOfQuadraturePoints_];
+        xsi = new double *[numberOfQuadraturePoints_];
         for (int i = 0; i < numberOfQuadraturePoints_; i++)
         {
             xsi[i] = new double[2];
@@ -159,7 +159,7 @@ ParametricSurfaceElement::ParametricSurfaceElement(const PartitionOfUnity elemen
         edgeVertices_ = {{0, 1}, {1, 2}, {2, 3}, {3, 0}};
         double **xsi_aux, *weight_aux;
         quadratures::lineQuadrature(numberOfQuadraturePoints_aux, xsi_aux, weight_aux);
-        xsi = new double*[numberOfQuadraturePoints_];
+        xsi = new double *[numberOfQuadraturePoints_];
         for (int i = 0; i < numberOfQuadraturePoints_; i++)
         {
             xsi[i] = new double[2];
@@ -195,7 +195,7 @@ ParametricSurfaceElement::ParametricSurfaceElement(const PartitionOfUnity elemen
         double *phi, **dphi_dxsi;
         getShapeFunctions(xsi[i], phi);
         getShapeFunctionsDerivatives(xsi[i], dphi_dxsi);
-        
+
         quadraturePoints_.emplace_back(new QuadraturePoint(xsi[i], phi, dphi_dxsi, weight[i], 2, numberOfNodes_));
     }
     setNodalParametricCoordinates();
@@ -203,7 +203,7 @@ ParametricSurfaceElement::ParametricSurfaceElement(const PartitionOfUnity elemen
 
 ParametricSurfaceElement::~ParametricSurfaceElement()
 {
-    for (QuadraturePoint* qp : quadraturePoints_)
+    for (QuadraturePoint *qp : quadraturePoints_)
     {
         delete qp;
     }
@@ -214,15 +214,15 @@ ParametricSurfaceElement::~ParametricSurfaceElement()
 
 void ParametricSurfaceElement::setNodalParametricCoordinates()
 {
-    nodalParametricCoordinates_ = new double*[2];
+    nodalParametricCoordinates_ = new double *[2];
     for (int i = 0; i < 2; i++)
         nodalParametricCoordinates_[i] = new double[numberOfNodes_];
-    
+
     switch (elementType_)
     {
     case PartitionOfUnity::T3:
-        nodalParametricCoordinates_[0][0] = 0.0; 
-        nodalParametricCoordinates_[0][1] = 1.0; 
+        nodalParametricCoordinates_[0][0] = 0.0;
+        nodalParametricCoordinates_[0][1] = 1.0;
         nodalParametricCoordinates_[0][2] = 0.0;
 
         nodalParametricCoordinates_[1][0] = 0.0;
@@ -230,12 +230,12 @@ void ParametricSurfaceElement::setNodalParametricCoordinates()
         nodalParametricCoordinates_[1][2] = 1.0;
         break;
     case PartitionOfUnity::T6:
-        nodalParametricCoordinates_[0][0] = 0.0; 
-        nodalParametricCoordinates_[0][1] = 1.0; 
-        nodalParametricCoordinates_[0][2] = 0.0; 
-        nodalParametricCoordinates_[0][3] = 0.5; 
-        nodalParametricCoordinates_[0][4] = 0.5; 
-        nodalParametricCoordinates_[0][5] = 0.0; 
+        nodalParametricCoordinates_[0][0] = 0.0;
+        nodalParametricCoordinates_[0][1] = 1.0;
+        nodalParametricCoordinates_[0][2] = 0.0;
+        nodalParametricCoordinates_[0][3] = 0.5;
+        nodalParametricCoordinates_[0][4] = 0.5;
+        nodalParametricCoordinates_[0][5] = 0.0;
 
         nodalParametricCoordinates_[1][0] = 0.0;
         nodalParametricCoordinates_[1][1] = 0.0;
@@ -245,16 +245,16 @@ void ParametricSurfaceElement::setNodalParametricCoordinates()
         nodalParametricCoordinates_[1][5] = 0.5;
         break;
     case PartitionOfUnity::T10:
-        nodalParametricCoordinates_[0][0] = 0.0;       
-        nodalParametricCoordinates_[0][1] = 1.0;       
-        nodalParametricCoordinates_[0][2] = 0.0;       
-        nodalParametricCoordinates_[0][3] = 1.0 / 3.0; 
-        nodalParametricCoordinates_[0][4] = 2.0 / 3.0; 
-        nodalParametricCoordinates_[0][5] = 2.0 / 3.0; 
-        nodalParametricCoordinates_[0][6] = 1.0 / 3.0; 
-        nodalParametricCoordinates_[0][7] = 0.0;       
-        nodalParametricCoordinates_[0][8] = 0.0;       
-        nodalParametricCoordinates_[0][9] = 1.0 / 3.0; 
+        nodalParametricCoordinates_[0][0] = 0.0;
+        nodalParametricCoordinates_[0][1] = 1.0;
+        nodalParametricCoordinates_[0][2] = 0.0;
+        nodalParametricCoordinates_[0][3] = 1.0 / 3.0;
+        nodalParametricCoordinates_[0][4] = 2.0 / 3.0;
+        nodalParametricCoordinates_[0][5] = 2.0 / 3.0;
+        nodalParametricCoordinates_[0][6] = 1.0 / 3.0;
+        nodalParametricCoordinates_[0][7] = 0.0;
+        nodalParametricCoordinates_[0][8] = 0.0;
+        nodalParametricCoordinates_[0][9] = 1.0 / 3.0;
 
         nodalParametricCoordinates_[1][0] = 0.0;
         nodalParametricCoordinates_[1][1] = 0.0;
@@ -268,78 +268,78 @@ void ParametricSurfaceElement::setNodalParametricCoordinates()
         nodalParametricCoordinates_[1][9] = 1.0 / 3.0;
         break;
     case PartitionOfUnity::Q4:
-        nodalParametricCoordinates_[0][0] = -1.0; 
-        nodalParametricCoordinates_[0][1] =  1.0; 
-        nodalParametricCoordinates_[0][2] =  1.0; 
-        nodalParametricCoordinates_[0][3] = -1.0; 
+        nodalParametricCoordinates_[0][0] = -1.0;
+        nodalParametricCoordinates_[0][1] = 1.0;
+        nodalParametricCoordinates_[0][2] = 1.0;
+        nodalParametricCoordinates_[0][3] = -1.0;
 
         nodalParametricCoordinates_[1][0] = -1.0;
         nodalParametricCoordinates_[1][1] = -1.0;
-        nodalParametricCoordinates_[1][2] =  1.0;
-        nodalParametricCoordinates_[1][3] =  1.0;
+        nodalParametricCoordinates_[1][2] = 1.0;
+        nodalParametricCoordinates_[1][3] = 1.0;
         break;
     case PartitionOfUnity::Q9:
-        nodalParametricCoordinates_[0][0] = -1.0; 
-        nodalParametricCoordinates_[0][1] =  1.0; 
-        nodalParametricCoordinates_[0][2] =  1.0; 
-        nodalParametricCoordinates_[0][3] = -1.0; 
-        nodalParametricCoordinates_[0][4] =  0.0; 
-        nodalParametricCoordinates_[0][5] =  1.0; 
-        nodalParametricCoordinates_[0][6] =  0.0; 
-        nodalParametricCoordinates_[0][7] = -1.0; 
-        nodalParametricCoordinates_[0][8] =  0.0; 
+        nodalParametricCoordinates_[0][0] = -1.0;
+        nodalParametricCoordinates_[0][1] = 1.0;
+        nodalParametricCoordinates_[0][2] = 1.0;
+        nodalParametricCoordinates_[0][3] = -1.0;
+        nodalParametricCoordinates_[0][4] = 0.0;
+        nodalParametricCoordinates_[0][5] = 1.0;
+        nodalParametricCoordinates_[0][6] = 0.0;
+        nodalParametricCoordinates_[0][7] = -1.0;
+        nodalParametricCoordinates_[0][8] = 0.0;
 
         nodalParametricCoordinates_[1][0] = -1.0;
         nodalParametricCoordinates_[1][1] = -1.0;
-        nodalParametricCoordinates_[1][2] =  1.0;
-        nodalParametricCoordinates_[1][3] =  1.0;
+        nodalParametricCoordinates_[1][2] = 1.0;
+        nodalParametricCoordinates_[1][3] = 1.0;
         nodalParametricCoordinates_[1][4] = -1.0;
-        nodalParametricCoordinates_[1][5] =  0.0;
-        nodalParametricCoordinates_[1][6] =  1.0;
-        nodalParametricCoordinates_[1][7] =  0.0;
-        nodalParametricCoordinates_[1][8] =  0.0;
+        nodalParametricCoordinates_[1][5] = 0.0;
+        nodalParametricCoordinates_[1][6] = 1.0;
+        nodalParametricCoordinates_[1][7] = 0.0;
+        nodalParametricCoordinates_[1][8] = 0.0;
         break;
     case PartitionOfUnity::Q16:
-        nodalParametricCoordinates_[0][0]  = -1.0;       
-        nodalParametricCoordinates_[0][1]  =  1.0;       
-        nodalParametricCoordinates_[0][2]  =  1.0;       
-        nodalParametricCoordinates_[0][3]  = -1.0;       
-        nodalParametricCoordinates_[0][4]  = -1.0 / 3.0; 
-        nodalParametricCoordinates_[0][5]  =  1.0 / 3.0; 
-        nodalParametricCoordinates_[0][6]  =  1.0;       
-        nodalParametricCoordinates_[0][7]  =  1.0;       
-        nodalParametricCoordinates_[0][8]  =  1.0 / 3.0; 
-        nodalParametricCoordinates_[0][9]  = -1.0 / 3.0; 
-        nodalParametricCoordinates_[0][10] = -1.0;       
-        nodalParametricCoordinates_[0][11] = -1.0;       
-        nodalParametricCoordinates_[0][12] = -1.0 / 3.0; 
-        nodalParametricCoordinates_[0][13] =  1.0 / 3.0; 
-        nodalParametricCoordinates_[0][14] =  1.0 / 3.0; 
-        nodalParametricCoordinates_[0][15] = -1.0 / 3.0; 
+        nodalParametricCoordinates_[0][0] = -1.0;
+        nodalParametricCoordinates_[0][1] = 1.0;
+        nodalParametricCoordinates_[0][2] = 1.0;
+        nodalParametricCoordinates_[0][3] = -1.0;
+        nodalParametricCoordinates_[0][4] = -1.0 / 3.0;
+        nodalParametricCoordinates_[0][5] = 1.0 / 3.0;
+        nodalParametricCoordinates_[0][6] = 1.0;
+        nodalParametricCoordinates_[0][7] = 1.0;
+        nodalParametricCoordinates_[0][8] = 1.0 / 3.0;
+        nodalParametricCoordinates_[0][9] = -1.0 / 3.0;
+        nodalParametricCoordinates_[0][10] = -1.0;
+        nodalParametricCoordinates_[0][11] = -1.0;
+        nodalParametricCoordinates_[0][12] = -1.0 / 3.0;
+        nodalParametricCoordinates_[0][13] = 1.0 / 3.0;
+        nodalParametricCoordinates_[0][14] = 1.0 / 3.0;
+        nodalParametricCoordinates_[0][15] = -1.0 / 3.0;
 
-        nodalParametricCoordinates_[1][0]  = -1.0;
-        nodalParametricCoordinates_[1][1]  = -1.0;
-        nodalParametricCoordinates_[1][2]  =  1.0;
-        nodalParametricCoordinates_[1][3]  =  1.0;
-        nodalParametricCoordinates_[1][4]  = -1.0;
-        nodalParametricCoordinates_[1][5]  = -1.0;
-        nodalParametricCoordinates_[1][6]  = -1.0 / 3.0;
-        nodalParametricCoordinates_[1][7]  =  1.0 / 3.0;
-        nodalParametricCoordinates_[1][8]  =  1.0;
-        nodalParametricCoordinates_[1][9]  =  1.0;
-        nodalParametricCoordinates_[1][10] =  1.0 / 3.0;
+        nodalParametricCoordinates_[1][0] = -1.0;
+        nodalParametricCoordinates_[1][1] = -1.0;
+        nodalParametricCoordinates_[1][2] = 1.0;
+        nodalParametricCoordinates_[1][3] = 1.0;
+        nodalParametricCoordinates_[1][4] = -1.0;
+        nodalParametricCoordinates_[1][5] = -1.0;
+        nodalParametricCoordinates_[1][6] = -1.0 / 3.0;
+        nodalParametricCoordinates_[1][7] = 1.0 / 3.0;
+        nodalParametricCoordinates_[1][8] = 1.0;
+        nodalParametricCoordinates_[1][9] = 1.0;
+        nodalParametricCoordinates_[1][10] = 1.0 / 3.0;
         nodalParametricCoordinates_[1][11] = -1.0 / 3.0;
         nodalParametricCoordinates_[1][12] = -1.0 / 3.0;
         nodalParametricCoordinates_[1][13] = -1.0 / 3.0;
-        nodalParametricCoordinates_[1][14] =  1.0 / 3.0;
-        nodalParametricCoordinates_[1][15] =  1.0 / 3.0;
+        nodalParametricCoordinates_[1][14] = 1.0 / 3.0;
+        nodalParametricCoordinates_[1][15] = 1.0 / 3.0;
         break;
     default:
         break;
     }
 }
 
-void ParametricSurfaceElement::getShapeFunctions(double* xsi, double*& phi) const
+void ParametricSurfaceElement::getShapeFunctions(double *xsi, double *&phi) const
 {
     phi = new double[numberOfNodes_];
     double xsi1 = xsi[0];
@@ -350,7 +350,7 @@ void ParametricSurfaceElement::getShapeFunctions(double* xsi, double*& phi) cons
     case PartitionOfUnity::T3:
         phi[0] = xsi1;
         phi[1] = xsi2;
-	    phi[2] = 1.0 - xsi1 - xsi2;
+        phi[2] = 1.0 - xsi1 - xsi2;
         break;
     case PartitionOfUnity::T6:
         phi[0] = xsi1 * (2.0 * xsi1 - 1.0);
@@ -372,12 +372,29 @@ void ParametricSurfaceElement::getShapeFunctions(double* xsi, double*& phi) cons
         phi[8] = -(9.0 * xsi1 * (3.0 * xsi1 - 1.0) * (xsi2 + xsi1 - 1.0)) / 2.0;
         phi[9] = -27.0 * xsi1 * xsi2 * (xsi2 + xsi1 - 1.0);
         break;
+    case PartitionOfUnity::Q4:
+        phi[0] = 0.25 * (1.0 - xsi1) * (1.0 - xsi2);
+        phi[1] = 0.25 * (1.0 + xsi1) * (1.0 - xsi2);
+        phi[2] = 0.25 * (1.0 + xsi1) * (1.0 + xsi2);
+        phi[3] = 0.25 * (1.0 - xsi1) * (1.0 + xsi2);
+        break;
+    case PartitionOfUnity::Q9:
+        phi[0] = 0.25 * xsi1 * xsi2 * (xsi1 - 1.0) * (xsi2 - 1.0);
+        phi[1] = 0.25 * xsi1 * xsi2 * (xsi1 + 1.0) * (xsi2 - 1.0);
+        phi[2] = 0.25 * xsi1 * xsi2 * (xsi1 + 1.0) * (xsi2 + 1.0);
+        phi[3] = 0.25 * xsi1 * xsi2 * (xsi1 - 1.0) * (xsi2 + 1.0);
+        phi[4] = 0.5 * (1.0 - xsi1 * xsi1) * (xsi2 - 1.0);
+        phi[5] = 0.5 * (xsi1 + 1.0) * (1.0 - xsi2 * xsi2);
+        phi[6] = 0.5 * (1.0 - xsi1 * xsi1) * (xsi2 + 1.0);
+        phi[7] = 0.5 * (xsi1 - 1.0) * (1.0 - xsi2 * xsi2);
+        phi[8] = (1.0 - xsi1 * xsi1) * (1.0 - xsi2 * xsi2);
+        break;
     }
 }
 
-void ParametricSurfaceElement::getShapeFunctionsDerivatives(double* xsi, double**& dphi_dxsi) const
+void ParametricSurfaceElement::getShapeFunctionsDerivatives(double *xsi, double **&dphi_dxsi) const
 {
-    dphi_dxsi = new double*[2];
+    dphi_dxsi = new double *[2];
     for (int i = 0; i < 2; i++)
     {
         dphi_dxsi[i] = new double[numberOfNodes_];
@@ -388,10 +405,10 @@ void ParametricSurfaceElement::getShapeFunctionsDerivatives(double* xsi, double*
     switch (elementType_)
     {
     case PartitionOfUnity::T3:
-        dphi_dxsi[0][0] = 1.0;    
-	    dphi_dxsi[0][1] = 0.0;    
-        dphi_dxsi[0][2] = -1.0;   
-        
+        dphi_dxsi[0][0] = 1.0;
+        dphi_dxsi[0][1] = 0.0;
+        dphi_dxsi[0][2] = -1.0;
+
         dphi_dxsi[1][0] = 0.0;
         dphi_dxsi[1][1] = 1.0;
         dphi_dxsi[1][2] = -1.0;
@@ -434,14 +451,45 @@ void ParametricSurfaceElement::getShapeFunctionsDerivatives(double* xsi, double*
         dphi_dxsi[1][8] = -(9.0 * xsi1 * (3.0 * xsi1 - 1.0)) / 2.0;
         dphi_dxsi[1][9] = -27.0 * xsi1 * (2.0 * xsi2 + xsi1 - 1.0);
         break;
+    case PartitionOfUnity::Q4:
+        dphi_dxsi[0][0] = -0.25 * (1.0 - xsi2);
+        dphi_dxsi[0][1] = 0.25 * (1.0 - xsi2);
+        dphi_dxsi[0][2] = 0.25 * (1.0 + xsi2);
+        dphi_dxsi[0][3] = -0.25 * (1.0 + xsi2);
+
+        dphi_dxsi[1][0] = -0.25 * (1.0 - xsi1);
+        dphi_dxsi[1][1] = -0.25 * (1.0 + xsi1);
+        dphi_dxsi[1][2] = 0.25 * (1.0 + xsi1);
+        dphi_dxsi[1][3] = 0.25 * (1.0 - xsi1);
+        break;
+    case PartitionOfUnity::Q9:
+        dphi_dxsi[0][0] = 0.25 * xsi2 * (1 - xsi2) * (1 - 2 * xsi1);
+        dphi_dxsi[0][1] = 0.25 * xsi2 * (1 - xsi2) * (1 + 2 * xsi1);
+        dphi_dxsi[0][2] = 0.25 * xsi2 * (1 + xsi2) * (1 + 2 * xsi1);
+        dphi_dxsi[0][3] = 0.25 * xsi2 * (1 + xsi2) * (1 - 2 * xsi1);
+        dphi_dxsi[0][4] = -xsi1 * (1 - xsi2);
+        dphi_dxsi[0][5] = 0.5 * (1 - xsi2 * xsi2);
+        dphi_dxsi[0][6] = -xsi1 * (1 + xsi2);
+        dphi_dxsi[0][7] = -0.5 * (1 - xsi2 * xsi2);
+        dphi_dxsi[0][8] = -2 * xsi1 * (1 - xsi2 * xsi2);
+
+        dphi_dxsi[1][0] = 0.25 * xsi1 * (1 - xsi1) * (1 - 2 * xsi2);
+        dphi_dxsi[1][1] = 0.25 * xsi1 * (1 + xsi1) * (1 - 2 * xsi2);
+        dphi_dxsi[1][2] = 0.25 * xsi1 * (1 + xsi1) * (1 + 2 * xsi2);
+        dphi_dxsi[1][3] = 0.25 * xsi1 * (1 - xsi1) * (1 + 2 * xsi2);
+        dphi_dxsi[1][4] = -0.5 * (1 - xsi1 * xsi1);
+        dphi_dxsi[1][5] = -xsi2 * (1 + xsi1);
+        dphi_dxsi[1][6] = 0.5 * (1 - xsi1 * xsi1);
+        dphi_dxsi[1][7] = -xsi2 * (1 - xsi1);
+        dphi_dxsi[1][8] = -2 * xsi2 * (1 - xsi1 * xsi1);
     default:
         break;
     }
 }
 
-void ParametricSurfaceElement::getShapeFunctionsSecondDerivatives(double* xsi, double**& d2phi_dxsi2) const
+void ParametricSurfaceElement::getShapeFunctionsSecondDerivatives(double *xsi, double **&d2phi_dxsi2) const
 {
-    d2phi_dxsi2 = new double*[2];
+    d2phi_dxsi2 = new double *[2];
     for (int i = 0; i < 2; i++)
     {
         d2phi_dxsi2[i] = new double[numberOfNodes_];
@@ -452,10 +500,10 @@ void ParametricSurfaceElement::getShapeFunctionsSecondDerivatives(double* xsi, d
     switch (elementType_)
     {
     case PartitionOfUnity::T3:
-        d2phi_dxsi2[0][0] = 0.0;    
-	    d2phi_dxsi2[0][1] = 0.0;    
-        d2phi_dxsi2[0][2] = 0.0;   
-        
+        d2phi_dxsi2[0][0] = 0.0;
+        d2phi_dxsi2[0][1] = 0.0;
+        d2phi_dxsi2[0][2] = 0.0;
+
         d2phi_dxsi2[1][0] = 0.0;
         d2phi_dxsi2[1][1] = 0.0;
         d2phi_dxsi2[1][2] = 0.0;

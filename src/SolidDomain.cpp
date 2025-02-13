@@ -586,7 +586,7 @@ void SolidDomain::assembleTransientLinearSystem(Mat &mat, Vec &vec)
 	auto end_timer = std::chrono::high_resolution_clock::now();
 	std::chrono::duration<double> elapsed = end_timer - start_timer;
 
-	PetscPrintf(PETSC_COMM_WORLD, "Assemble Linear System. Elapsed time: %f\n", elapsed.count());
+	// PetscPrintf(PETSC_COMM_WORLD, "Assemble Linear System. Elapsed time: %f\n", elapsed.count());
 }
 
 void SolidDomain::applyNeummanConditions(Vec &vec, int &ndofs, const std::vector<DegreeOfFreedom *> &dofsForces, double *&externalForces, const double &loadFactor)
