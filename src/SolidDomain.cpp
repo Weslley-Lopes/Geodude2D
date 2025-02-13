@@ -1184,6 +1184,46 @@ void SolidDomain::exportToParaview(const int &step)
 	file.close();
 }
 
+ enum class ParaViewInitMode {
+        OPEN_FILE,      // Abre apenas o arquivo VTU
+        OPEN_STATE,     // Abre um estado salvo (.pvsm)
+        EXECUTE_SCRIPT  // Executa um script Python que inicializa o ParaView (trace)
+    };
+
+    // Método para abrir o ParaView conforme o modo escolhido.
+    // 'pasta' é o diretório onde os arquivos estão e os nomes são fixos (arquivo.vtu, estado.pvsm, script_trace.py)
+    void abrirParaView(ParaViewInitMode mode, const std::string& pasta) {
+        std::string caminho;
+        std::string comando;
+        
+        switch (mode) {
+            case ParaViewInitMode::OPEN_FILE:
+                // Abre o arquivo VTU diretamente
+                caminho = pasta + "/arquivo.vtu";
+                comando = "paraview " + caminho + " &";
+                break;
+            case ParaViewInitMode::OPEN_STATE:
+                // Abre o estado salvo do ParaView
+                caminho = pasta + "/estado.pvsm";
+                comando = "paraview --state=" + caminho + " &";
+                break;
+            case ParaViewInitMode::EXECUTE_SCRIPT:
+                // Executa o script Python (trace) para configurar o ParaView
+                caminho = pasta + "/script_trace.py";
+                comando = "paraview --script=" + caminho + " &";
+                break;
+            default:
+                std::cerr << "Modo de inicialização inválido!" << std::endl;
+                return;
+        }
+        
+        // Executa o comando, abrindo o ParaView em segundo plano para que o programa continue executando
+        int resultado = system(comando.c_str());
+        if (resultado != 0) {
+            std::cerr << "Erro ao executar o comando: " << comando << std::endl;
+        }
+    }
+
 void SolidDomain::readInput(const std::string &inputFile, const bool &deleteFiles, const PartitionOfUnity elementType)
 {
 	int rank;
