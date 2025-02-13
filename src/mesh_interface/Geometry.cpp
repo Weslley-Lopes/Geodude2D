@@ -281,7 +281,7 @@ void Geometry::addDirichletBoundaryCondition(const std::vector<Surface *> &surfa
 		dirichlet_.emplace_back(new GeometricSurfaceDirichlet(++index, surface, variable, dof, value));
 }
 
-void Geometry::addNeumannBoundaryCondition(const std::vector<Point *> &points, const double valueX, const double valueY, const double valueZ)
+void Geometry::addNeumannBoundaryCondition(const std::vector<Point *> &points, const double valueX, const double valueY, const double valueZ, ForceType type)
 {
 	int index = neumann_.size() - 1;
 	for (Point *point : points)

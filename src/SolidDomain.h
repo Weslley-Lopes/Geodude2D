@@ -108,6 +108,8 @@ private:
 	void assembleTransientLinearSystem(Mat &mat, Vec &vec);
 
 	void applyNeummanConditions(Vec &vec, int &ndofs, const std::vector<DegreeOfFreedom *> &dofsForces, double *&externalForces, const double &loadFactor);
+	
+	void applyNeummanConditions(Vec &vec, Mat &mat, int &ndofs, const std::vector<DegreeOfFreedom *> &dofsForces, double *&externalForces, const double &loadFactor);
 
 	void solveLinearSystem(KSP &ksp, Mat &mat, Vec &rhs, Vec &solution);
 

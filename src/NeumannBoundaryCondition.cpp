@@ -2,7 +2,7 @@
 #include <cmath>
 #include <iostream>
 
-NeumannBoundaryCondition::NeumannBoundaryCondition(const int index, const int ndofs, const double valueX, const double valueY, const double valueZ)
+NeumannBoundaryCondition::NeumannBoundaryCondition(const int index, const int ndofs, const double valueX, const double valueY, const double valueZ, ForceType type)
     : index_(index), ndofs_(ndofs), forces_{valueX, valueY, valueZ}  {}
 
 NeumannBoundaryCondition::~NeumannBoundaryCondition() {}
@@ -17,7 +17,12 @@ double NeumannBoundaryCondition::getForce(const int& dof) const
     return forces_[dof];
 }
 
-PointLoad::PointLoad(const int index, const int ndofs, Node* const node, const double valueX, const double valueY, const double valueZ)
+ForceType NeumannBoundaryCondition::getType() const
+{
+    return type_;
+}
+
+PointLoad::PointLoad(const int index, const int ndofs, Node* const node, const double valueX, const double valueY, const double valueZ, ForceType type)
     : NeumannBoundaryCondition(index, ndofs, valueX, valueY, valueZ), node_(node) {}
 
 PointLoad::~PointLoad() {}

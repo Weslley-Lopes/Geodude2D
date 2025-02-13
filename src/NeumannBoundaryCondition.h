@@ -2,6 +2,8 @@
 #include "Node.h"
 #include "BaseLineElement.h"
 #include "BaseSurfaceElement.h"
+#include "mesh_interface/Enums.h"
+
 
 class NeumannBoundaryCondition
 {
@@ -9,16 +11,19 @@ class NeumannBoundaryCondition
         int index_;
         int ndofs_;
         double forces_[3];
+        ForceType type_;
 
     public:
 
-        NeumannBoundaryCondition(const int index, const int ndofs, const double valueX, const double valueY, const double valueZ);
+        NeumannBoundaryCondition(const int index, const int ndofs, const double valueX, const double valueY, const double valueZ, ForceType type = CONSERTATIVE);
 
         virtual ~NeumannBoundaryCondition() = 0;
 
         int getNumberOfDOFs() const;
 
         double getForce(const int& dof) const;
+
+        ForceType getType() const;
 
         virtual void getNodalForce(const int& dimension, std::vector<DegreeOfFreedom*>& dofs, double*& values) const = 0;
 
@@ -32,7 +37,7 @@ class PointLoad : public NeumannBoundaryCondition
     
     public:
 
-        PointLoad(const int index, const int ndofs, Node* const node, const double valueX, const double valueY, const double valueZ);
+        PointLoad(const int index, const int ndofs, Node* const node, const double valueX, const double valueY, const double valueZ, ForceType type = CONSERTATIVE);
 
         ~PointLoad() override;
 

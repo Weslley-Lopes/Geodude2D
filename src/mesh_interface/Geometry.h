@@ -83,17 +83,11 @@ public:
 
 	void addDirichletBoundaryCondition(const std::vector<Surface *> &surfaces, const Variable variable, const ConstrainedDOF dof, const double value);
 
-	void addNeumannBoundaryCondition(const std::vector<Point *> &points, const double valueX, const double valueY, const double valueZ);
+	void addNeumannBoundaryCondition(const std::vector<Point *> &points, const double valueX, const double valueY, const double valueZ, ForceType type = CONSERTATIVE);
 
 	void addNeumannBoundaryCondition(const std::vector<Line *> &lines, const double valueX, const double valueY, const double valueZ);
 
 	void addNeumannBoundaryCondition(const std::vector<Surface *> &surfaces, const double valueX, const double valueY, const double valueZ);
-
-	void addInterfaceBoundaryCondition(const std::vector<Point *> &points);
-
-	void addInterfaceBoundaryCondition(const std::vector<Line *> &lines);
-
-	void addInterfaceBoundaryCondition(const std::vector<Surface *> &surfaces);
 
 	void addInitialCondition(const std::vector<Point *> &points, const Variable variable, const ConstrainedDOF dof, const double value);
 

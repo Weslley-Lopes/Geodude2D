@@ -301,7 +301,7 @@ void SolidDomain::solveTransientProblem()
 		// Newton-Raphson loop
 		for (int iteration = 0; (iteration < maxNonlinearIterations); iteration++)
 		{
-			applyNeummanConditions(rhs, ndofsForces, dofsForces, externalForces, 1.0);
+			applyNeummanConditions(rhs, tangent, ndofsForces, dofsForces, externalForces, 1.0);
 			assembleTransientLinearSystem(tangent, rhs);
 			MatZeroRowsColumns(tangent, numberOfConstrainedDOFs, constrainedDOFs, 1.0, solution, rhs);
 			MatView(tangent, PETSC_VIEWER_DRAW_WORLD);
@@ -310,9 +310,9 @@ void SolidDomain::solveTransientProblem()
 			computeCurrentVariables();
 			computeIntermediateVariables();
 
-			// PetscMemoryGetCurrentUsage(&bytes);
-			// PetscPrintf(PETSC_COMM_WORLD, "Newton iteration: %d - L2 Position Norm: %E - L2 Pressure Norm: %E\nMemory used by each processor: %f Mb\n",
-			// 			iteration, positionNorm / initialPositionNorm, pressureNorm, bytes / (1024 * 1024));
+			PetscMemoryGetCurrentUsage(&bytes);
+			PetscPrintf(PETSC_COMM_WORLD, "Newton iteration: %d - L2 Position Norm: %E - L2 Pressure Norm: %E\nMemory used by each processor: %f Mb\n",
+						iteration, positionNorm / initialPositionNorm, pressureNorm, bytes / (1024 * 1024));
 
 			MatZeroEntries(tangent);
 			VecZeroEntries(rhs);
@@ -508,7 +508,10 @@ void SolidDomain::getExternalForces(int &ndofs, std::vector<DegreeOfFreedom *> &
 		for (int i = 0; i < ndof; i++)
 		{
 			dofs.push_back(nbc_dofs[i]);
-			externalForces[++aux] = val[i];
+			// if (nbc->getType() == NON_CONSERVATIVE)
+				externalForces[++aux] = val[i];
+			// else
+			// 	externalForces[++aux] = df_dy[0] * y[0] + df_dy[1] *  + val[i];
 		}
 		delete[] val;
 	}
@@ -589,7 +592,7 @@ void SolidDomain::assembleTransientLinearSystem(Mat &mat, Vec &vec)
 	// PetscPrintf(PETSC_COMM_WORLD, "Assemble Linear System. Elapsed time: %f\n", elapsed.count());
 }
 
-void SolidDomain::applyNeummanConditions(Vec &vec, int &ndofs, const std::vector<DegreeOfFreedom *> &dofsForces, double *&externalForces, const double &loadFactor)
+void SolidDomain::applyNeummanConditions(Vec &vec, Mat &mat, int &ndofs, const std::vector<DegreeOfFreedom *> &dofsForces, double *&externalForces, const double &loadFactor)
 {
 	int rank;
 	MPI_Comm_rank(PETSC_COMM_WORLD, &rank);
@@ -2657,7 +2660,7 @@ void SolidDomain::solveStaticProblem()
 		{
 			setPastVariables();
 			computeIntermediateVariables();
-			applyNeummanConditions(rhs, ndofsForces, dofsForces, externalForces, loadFactor);
+			applyNeummanConditions(rhs, tangent, ndofsForces, dofsForces, externalForces, loadFactor);
 			assembleStaticLinearSystem(tangent, rhs);
 			MatZeroRowsColumns(tangent, numberOfConstrainedDOFs, constrainedDOFs, 1.0, solution, rhs);
 			MatView(tangent, PETSC_VIEWER_DRAW_WORLD);
@@ -2835,8 +2838,8 @@ void SolidDomain::solveStaggeredProblem(int &ndofsInterfaceForces,
 	double positionNorm, pressureNorm;
 	for (int iteration = 0; (iteration < maxNonlinearIterations); iteration++)
 	{
-		applyNeummanConditions(rhs, ndofsForces, dofsForces, externalForces, 1.0);
-		applyNeummanConditions(rhs, ndofsInterfaceForces, dofsInterfaceForces, interfaceForces, 1.0);
+		applyNeummanConditions(rhs, tangent, ndofsForces, dofsForces, externalForces, 1.0);
+		applyNeummanConditions(rhs, tangent, ndofsInterfaceForces, dofsInterfaceForces, interfaceForces, 1.0);
 		assembleTransientLinearSystem(tangent, rhs);
 		MatZeroRowsColumns(tangent, numberOfConstrainedDOFs, constrainedDOFs, 1.0, solution, rhs);
 		// MatView(tangent, PETSC_VIEWER_DRAW_WORLD);

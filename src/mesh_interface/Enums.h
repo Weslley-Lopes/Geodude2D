@@ -8,6 +8,12 @@ enum ConstrainedDOF
     ALL
 };
 
+enum ForceType
+{
+    CONSERTATIVE,
+    NON_CONSERVATIVE
+};
+
 enum Variable
 {
     DISPLACEMENT,
