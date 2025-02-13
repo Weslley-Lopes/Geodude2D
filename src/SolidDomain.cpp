@@ -248,6 +248,16 @@ void SolidDomain::solveTransientProblem()
 	int *constrainedDOFs;
 	getConstrainedDOFs(numberOfConstrainedDOFs, constrainedDOFs);
 
+	std::vector<NeumannBoundaryCondition *> conservativeNBCs;
+	std::vector<NeumannBoundaryCondition *> nonConservativeNBCs;
+	for (NeumannBoundaryCondition *const &nbc : neumannBoundaryConditions_)
+	{
+		if (nbc->getType() == CONSERVATIVE)
+			conservativeNBCs.push_back(nbc);
+		else
+			nonConservativeNBCs.push_back(nbc);
+	}
+
 	// Array of external forces
 	int ndofsForces;
 	std::vector<DegreeOfFreedom *> dofsForces;
@@ -259,10 +269,10 @@ void SolidDomain::solveTransientProblem()
 	KSPSetTolerances(ksp, 1.0e-8, PETSC_DEFAULT, PETSC_DEFAULT, 100);
 	KSPGMRESSetRestart(ksp, 100);
 	KSPGetPC(ksp, &pc);
-	PCSetType(pc, PCBJACOBI);
+	//PCSetType(pc, PCBJACOBI);
 	// KSPSetType(ksp, KSPPREONLY);
 	// KSPGetPC(ksp, &pc);
-	// PCSetType(pc, PCLU);
+	 PCSetType(pc, PCLU);
 
 	createSystemMatrix(tangent);
 
@@ -310,9 +320,9 @@ void SolidDomain::solveTransientProblem()
 			computeCurrentVariables();
 			computeIntermediateVariables();
 
-			PetscMemoryGetCurrentUsage(&bytes);
-			PetscPrintf(PETSC_COMM_WORLD, "Newton iteration: %d - L2 Position Norm: %E - L2 Pressure Norm: %E\nMemory used by each processor: %f Mb\n",
-						iteration, positionNorm / initialPositionNorm, pressureNorm, bytes / (1024 * 1024));
+			// PetscMemoryGetCurrentUsage(&bytes);
+			// PetscPrintf(PETSC_COMM_WORLD, "Newton iteration: %d - L2 Position Norm: %E - L2 Pressure Norm: %E\nMemory used by each processor: %f Mb\n",
+			// 			iteration, positionNorm / initialPositionNorm, pressureNorm, bytes / (1024 * 1024));
 
 			MatZeroEntries(tangent);
 			VecZeroEntries(rhs);
@@ -508,10 +518,12 @@ void SolidDomain::getExternalForces(int &ndofs, std::vector<DegreeOfFreedom *> &
 		for (int i = 0; i < ndof; i++)
 		{
 			dofs.push_back(nbc_dofs[i]);
-			// if (nbc->getType() == NON_CONSERVATIVE)
-				externalForces[++aux] = val[i];
+			// double df_dy[2];
+
+			// if (nbc->getType() == CONSERVATIVE)
+			externalForces[++aux] = val[i];
 			// else
-			// 	externalForces[++aux] = df_dy[0] * y[0] + df_dy[1] *  + val[i];
+			// 	externalForces[++aux] = df_dy[0] * y[0] + df_dy[1] * +val[i];
 		}
 		delete[] val;
 	}
@@ -606,12 +618,82 @@ void SolidDomain::applyNeummanConditions(Vec &vec, Mat &mat, int &ndofs, const s
 			for (int i = 0; i < ndofs; i++)
 			{
 				values[i] = externalForces[i] * loadFactor;
+				// values[i] = externalForces[i] * loadFactor + ;
 				indexes[i] = dofsForces[i]->getIndex();
 			}
 			VecSetValues(vec, ndofs, indexes, values, ADD_VALUES);
 			delete[] indexes;
 			delete[] values;
 		}
+
+		// std::vector<Line *> lines;
+		// for (auto &pair : geometry_->getLines())
+		// 	lines.push_back(pair.second);
+		// BaseElement *base = lines[1]->getBaseElements()[0];
+		// double t[2];
+		// std::vector<Node *> nodes = base->getNodes();
+		// double numberOfNodes = nodes.size();
+		// double *xsi = new double[2];
+		// xsi[0] = -1.0;
+		// double **dphi_dxsi;
+		// base->getParametricElement()->getShapeFunctionsDerivatives(xsi, dphi_dxsi);
+		// double dt_dy[2][2] = {};
+		// for (int i = 0; i < numberOfNodes; i++)
+		// {
+		// 	t[0] += dphi_dxsi[0][i] * nodes[i]->getDegreeOfFreedom(0)->getCurrentValue();
+		// 	t[1] += dphi_dxsi[0][i] * nodes[i]->getDegreeOfFreedom(1)->getCurrentValue();
+
+		// 	dt_dy[0][0] += dphi_dxsi[0][i];
+		// 	dt_dy[1][1] += dphi_dxsi[0][i];
+		// }
+		// delete[] xsi;
+		// delete dphi_dxsi;
+
+		// double norm = t[0] * t[0] + t[1] * t[1];
+		// norm = sqrt(norm);
+		// t[0] /= norm;
+		// t[1] /= norm;
+
+		// double n[2];
+		// n[0] = -t[1];
+		// n[1] = t[0];
+
+		// double dn_dy[2][2] = {};
+		// dn_dy[0][0] = -dt_dy[0][0];
+		// dn_dy[1][1] = dt_dy[1][1];
+
+		// double forceMag = -2.0;
+		// double force[2];
+		// force[0] = forceMag * n[0];
+		// force[1] = forceMag * n[1];
+
+		// double df_dy[2][2] = {};
+		// df_dy[0][0] = forceMag * dn_dy[0][0];
+		// df_dy[1][1] = forceMag * dn_dy[1][1];
+
+		// double identity[2][2];
+		// identity[0][0] = 1.0;
+		// identity[0][1] = 0.0;
+		// identity[1][0] = 0.0;
+		// identity[1][1] = 1.0;
+
+		// double hessian[2][2] = {}; // b, a, f
+		// for (int n1 = 0; n1 < ndofs; n1++)
+		// {
+		// 	for (int n2 = 0; n2 < ndofs; n2++)
+		// 	{
+		// 		for (int i = 0; i < 2; i++)
+		// 		{
+		// 			for (int j = 0; j < 2; j++)
+		// 			{
+		// 				for (int k = 0; k < 2; k++)
+		// 				{
+		// 					hessian[j][k] += df_dy[i][j] * identity[i][k] * identity[a][b];
+		// 				}
+		// 			}
+		// 		}
+		// 	}
+		// }
 	}
 }
 
@@ -1507,7 +1589,8 @@ void SolidDomain::transferGeometricBoundaryConditions()
 			double x = nbc->getValueX();
 			double y = nbc->getValueY();
 			double z = nbc->getValueZ();
-			neumannBoundaryConditions_.emplace_back(new PointLoad(index, dimension_, n, x, y, z));
+			ForceType type = nbc->getType();
+			neumannBoundaryConditions_.emplace_back(new PointLoad(index, dimension_, n, x, y, z, type));
 			index++;
 		}
 		// Transfering distributed loads applied to line

@@ -25,6 +25,11 @@ double GeometricNeumann::getValueZ() const
     return valueZ_;
 }
 
+ForceType GeometricNeumann::getType() const
+{
+    return type_;
+}
+
 GeometricPointNeumann::GeometricPointNeumann(const int index, Point* const point, const double valueX, const double valueY, const double valueZ)
     : GeometricNeumann(index, valueX, valueY, valueZ), point_(point) {}
 

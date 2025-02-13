@@ -10,6 +10,7 @@ class GeometricNeumann
         double valueX_;
         double valueY_;
         double valueZ_;
+        ForceType type_;
 
     public:
 
@@ -24,6 +25,8 @@ class GeometricNeumann
         double getValueY() const;
 
         double getValueZ() const;
+
+        ForceType getType() const;
 
         virtual Point* getPoint() const = 0;
 

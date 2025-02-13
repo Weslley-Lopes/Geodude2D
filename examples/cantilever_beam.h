@@ -15,11 +15,16 @@ Line *l3 = solid_geo->addLine({p3, p0});
 
 Surface *s0 = solid_geo->addPlaneSurface({l0, l1, l2, l3});
 
-double h = 0.25;
-solid_geo->transfiniteLine({l0}, 10.0 / h + 1.0);
-solid_geo->transfiniteLine({l1}, 1.0 / h + 1.0);
-solid_geo->transfiniteLine({l2}, 10.0 / h + 1.0);
-solid_geo->transfiniteLine({l3}, 1.0 / h + 1.0);
+double h = 0.5;
+// solid_geo->transfiniteLine({l0}, 10.0 / h + 1.0);
+// solid_geo->transfiniteLine({l1}, 1.0 / h + 1.0);
+// solid_geo->transfiniteLine({l2}, 10.0 / h + 1.0);
+// solid_geo->transfiniteLine({l3}, 1.0 / h + 1.0);
+
+solid_geo->transfiniteLine({l0}, 23);
+solid_geo->transfiniteLine({l1}, 3);
+solid_geo->transfiniteLine({l2}, 23);
+solid_geo->transfiniteLine({l3}, 3);
 //solid_geo->transfiniteSurface({s0}, "Right", {p0, p1, p2, p3});
 
 solid_geo->addDirichletBoundaryCondition({l3}, Variable::ALL_VARIABLES, ConstrainedDOF::ALL, 0.0);
@@ -32,10 +37,10 @@ SolidDomain *solid_problem = new SolidDomain(solid_geo);
 solid_problem->applyMaterial({s0}, mat);
 solid_problem->generateMesh(T6, FRONT, "teste", "", true, false);
 // solid_problem->generateMesh(Q9, FRONT, "teste", "", true, false);
-solid_problem->setNumberOfSteps(200);
+solid_problem->setNumberOfSteps(1000);
 solid_problem->setExportFrequency(1);
 
-solid_problem->setDeltat(1.0e-5);
+solid_problem->setDeltat(4.5e-5);
 solid_problem->setLumpedMass(false);
 solid_problem->setSpectralRadius(1.0);
 solid_problem->setMaxNonlinearIterations(15);

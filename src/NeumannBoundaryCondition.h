@@ -15,7 +15,7 @@ class NeumannBoundaryCondition
 
     public:
 
-        NeumannBoundaryCondition(const int index, const int ndofs, const double valueX, const double valueY, const double valueZ, ForceType type = CONSERTATIVE);
+        NeumannBoundaryCondition(const int index, const int ndofs, const double valueX, const double valueY, const double valueZ, ForceType type = CONSERVATIVE);
 
         virtual ~NeumannBoundaryCondition() = 0;
 
@@ -37,7 +37,7 @@ class PointLoad : public NeumannBoundaryCondition
     
     public:
 
-        PointLoad(const int index, const int ndofs, Node* const node, const double valueX, const double valueY, const double valueZ, ForceType type = CONSERTATIVE);
+        PointLoad(const int index, const int ndofs, Node* const node, const double valueX, const double valueY, const double valueZ, ForceType type = CONSERVATIVE);
 
         ~PointLoad() override;
 

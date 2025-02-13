@@ -10,7 +10,7 @@ enum ConstrainedDOF
 
 enum ForceType
 {
-    CONSERTATIVE,
+    CONSERVATIVE,
     NON_CONSERVATIVE
 };
 

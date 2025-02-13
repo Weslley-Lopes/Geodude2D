@@ -23,7 +23,7 @@ solid_geo->transfiniteLine({l3}, 1.0 / h + 1.0);
 //solid_geo->transfiniteSurface({s0}, "Right", {p0, p1, p2, p3});
 
 solid_geo->addDirichletBoundaryCondition({l3}, Variable::ALL_VARIABLES, ConstrainedDOF::ALL, 0.0);
-solid_geo->addNeumannBoundaryCondition({l2}, 0.0, -2.85, 0.0);
+solid_geo->addNeumannBoundaryCondition({p2}, 0.0, -2.85, 0.0, CONSERVATIVE);
 
 Material *mat = new ElasticSolid(SAINT_VENANT_KIRCHHOFF, 1.2e4, 0.2, 1.e-6);
 
@@ -32,10 +32,10 @@ SolidDomain *solid_problem = new SolidDomain(solid_geo);
 solid_problem->applyMaterial({s0}, mat);
 solid_problem->generateMesh(T6, FRONT, "teste", "", true, false);
 // solid_problem->generateMesh(Q9, FRONT, "teste", "", true, false);
-solid_problem->setNumberOfSteps(200);
-solid_problem->setExportFrequency(1);
+solid_problem->setNumberOfSteps(2667);
+solid_problem->setExportFrequency(10);
 
-solid_problem->setDeltat(1.0e-5);
+solid_problem->setDeltat(4.5e-5);
 solid_problem->setLumpedMass(false);
 solid_problem->setSpectralRadius(1.0);
 solid_problem->setMaxNonlinearIterations(15);

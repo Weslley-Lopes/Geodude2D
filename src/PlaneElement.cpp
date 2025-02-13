@@ -309,7 +309,7 @@ void PlaneElement::elementContributions(int &ndofs1,
                 }
             }
         }
-    }
+    }    
 }
 
 void PlaneElement::clearNeighborElements()
