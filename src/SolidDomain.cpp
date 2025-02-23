@@ -345,8 +345,8 @@ void SolidDomain::solveTransientProblem()
 			computeIntermediateVariables();
 /// mudei aqui
 			PetscMemoryGetCurrentUsage(&bytes);
-			 PetscPrintf(PETSC_COMM_WORLD, "Newton iteration: %d - L2 Position Norm: %E - L2 Pressure Norm: %E\nMemory used by each processor: %f Mb\n",
-			 			iteration, positionNorm / initialPositionNorm, pressureNorm, bytes / (1024 * 1024));
+			// PetscPrintf(PETSC_COMM_WORLD, "Newton iteration: %d - L2 Position Norm: %E - L2 Pressure Norm: %E\nMemory used by each processor: %f Mb\n",
+			 //			iteration, positionNorm / initialPositionNorm, pressureNorm, bytes / (1024 * 1024));
 
 			MatZeroEntries(tangent);
 			VecZeroEntries(rhs);
