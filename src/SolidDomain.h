@@ -15,13 +15,30 @@
 #include <metis.h>
 #include <chrono>
 #include <set>
+#include <iostream>
+#include <cstdlib>
+
+
 
 class SolidDomain
 {
 public:
+
+
 	SolidDomain(Geometry *geometry, const int &index = 0);
 
 	~SolidDomain();
+
+
+	 // Função do tipo void para abrir o ParaView conforme o modo selecionado.
+	 enum class ParaViewInitMode
+{
+	OPEN_FILE,	// Abre apenas o arquivo VTU
+	OPEN_STATE, // Abre um estado salvo (.pvsm)
+	EXE_SCRIPT, // Executa um script Python que inicializa o ParaView (trace)
+
+};
+	 void abrirParaView(ParaViewInitMode mode, const std::string& pasta);
 
 	void setNumberOfSteps(const int numberOfSteps);
 
@@ -38,7 +55,7 @@ public:
 	void setSpectralRadius(const double rhoInf);
 
 	void setGeneralizedAlphas(const double alphaM, const double alphaF);
-	
+
 	void setNewmarkParameters(const double beta, const double gamma);
 
 	void setAlpha(const double alpha);
@@ -54,7 +71,7 @@ public:
 	void setReferenceConfiguration(const ReferenceConfiguration reference);
 
 	void addGraphic(std::string fileName, Variable variable, ConstrainedDOF direction, std::string pointName);
-	
+
 	void applyMaterial(const std::vector<Line *> lines, Material *&material);
 
 	void applyMaterial(const std::vector<Surface *> surfaces, Material *&material);
@@ -100,15 +117,15 @@ private:
 	void getExternalForces(int &ndofs, std::vector<DegreeOfFreedom *> &dofs, double *&externalForces);
 
 	double getSurfaceForcesPotentialEnergy();
-	
+
 	void applyInitialConditions();
-	
+
 	void assembleStaticLinearSystem(Mat &mat, Vec &vec);
 
 	void assembleTransientLinearSystem(Mat &mat, Vec &vec);
 
 	void applyNeummanConditions(Vec &vec, int &ndofs, const std::vector<DegreeOfFreedom *> &dofsForces, double *&externalForces, const double &loadFactor);
-	
+
 	void applyNeummanConditions(Vec &vec, Mat &mat, int &ndofs, const std::vector<DegreeOfFreedom *> &dofsForces, double *&externalForces, const double &loadFactor);
 
 	void solveLinearSystem(KSP &ksp, Mat &mat, Vec &rhs, Vec &solution);
@@ -167,7 +184,6 @@ private:
 	idx_t *perm_;
 
 	std::vector<OutputGraphic *> outputGraphics_;
-
 
 public:
 	friend class CoupledDomain;

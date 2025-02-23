@@ -32,7 +32,31 @@ SolidDomain::SolidDomain(Geometry *geometry, const int &index)
 	fail2 = system("rm ./plotData/*.dat 2> /dev/null");
 }
 
-SolidDomain::~SolidDomain() {}
+SolidDomain::~SolidDomain() {} 
+//FUNÇÃO PARA ABRIR O PARA VIEW
+void SolidDomain::abrirParaView(ParaViewInitMode mode, const std::string& caminhoCompleto) {
+    std::string comando;
+    
+    switch (mode) {
+        case ParaViewInitMode::OPEN_FILE:
+            comando = "paraview " + caminhoCompleto + " &";
+            break;
+        case ParaViewInitMode::OPEN_STATE:
+            comando = "paraview --state=" + caminhoCompleto + " &";
+            break;
+        case ParaViewInitMode::EXE_SCRIPT:
+            comando = "paraview --script=" + caminhoCompleto ;
+            break;
+        default:
+            std::cerr << "Modo de inicialização inválido!" << std::endl;
+            return;
+    }
+    
+    int resultado = system(comando.c_str());
+    if (resultado != 0) {
+        std::cerr << "Erro ao executar o comando: " << comando << std::endl;
+    }
+}
 
 void SolidDomain::setNumberOfSteps(const int numberOfSteps)
 {
@@ -319,10 +343,10 @@ void SolidDomain::solveTransientProblem()
 			updateVariables(solution, positionNorm, pressureNorm);
 			computeCurrentVariables();
 			computeIntermediateVariables();
-
-			// PetscMemoryGetCurrentUsage(&bytes);
-			// PetscPrintf(PETSC_COMM_WORLD, "Newton iteration: %d - L2 Position Norm: %E - L2 Pressure Norm: %E\nMemory used by each processor: %f Mb\n",
-			// 			iteration, positionNorm / initialPositionNorm, pressureNorm, bytes / (1024 * 1024));
+/// mudei aqui
+			PetscMemoryGetCurrentUsage(&bytes);
+			 PetscPrintf(PETSC_COMM_WORLD, "Newton iteration: %d - L2 Position Norm: %E - L2 Pressure Norm: %E\nMemory used by each processor: %f Mb\n",
+			 			iteration, positionNorm / initialPositionNorm, pressureNorm, bytes / (1024 * 1024));
 
 			MatZeroEntries(tangent);
 			VecZeroEntries(rhs);

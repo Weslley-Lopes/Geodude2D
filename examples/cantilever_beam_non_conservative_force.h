@@ -1,6 +1,7 @@
 // ======================================================================================================
 // VIGA COM CARREGAMENTO UNIFORMEMENTE DISTRIBUÍDO - BATHE (1975)
 //=======================================================================================================
+#include <string>
 Geometry *solid_geo = new Geometry(0);
 
 Point *p0 = solid_geo->addPoint({0.0, 0.0, 0.0});
@@ -44,3 +45,14 @@ solid_problem->setGravity(0.0, 0.0, 0.0);
 
 solid_problem->addGraphic("disp-A", DISPLACEMENT, Y, "p1");
 solid_problem->solveTransientProblem();
+
+
+//---opção para abrir o ParaView com um estado salvo----o estado precisar ser configurado manualmente 1 vez
+
+//std::string pastaArquivos = "/home/pcv_180172/SilvioVeras/CPP/Geodude2D/build/Debug/results/solidOutput.pvsm";
+//solid_problem->abrirParaView(SolidDomain::ParaViewInitMode::OPEN_STATE, pastaArquivos);
+
+// opçaõ para abrir o ParaView com um script Python que inicializa o ParaView (trace) e faz a animação* ainda precisa de ajuste
+
+std::string pastaArquivos = "/home/pcv_180172/SilvioVeras/CPP/Geodude2D/build/Debug/results/solidOutput.py";
+solid_problem->abrirParaView(SolidDomain::ParaViewInitMode::EXE_SCRIPT, pastaArquivos);
