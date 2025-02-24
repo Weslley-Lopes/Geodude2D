@@ -59,5 +59,5 @@ solid_problem->solveTransientProblem();
 
 // opçaõ para abrir o ParaView com um script Python que inicializa o ParaView (trace) e faz a animação* ainda precisa de ajuste
 
-std::string pastaArquivos = "/home/pcv_180172/SilvioVeras/CPP/Geodude2D/build/Debug/results/solidOutput.py";
-solid_problem->abrirParaView(SolidDomain::ParaViewInitMode::EXE_SCRIPT, pastaArquivos);
+//std::string pastaArquivos = "/home/pcv_180172/SilvioVeras/CPP/Geodude2D/build/Debug/results/solidOutput.py";
+//solid_problem->abrirParaView(SolidDomain::ParaViewInitMode::EXE_SCRIPT, pastaArquivos);

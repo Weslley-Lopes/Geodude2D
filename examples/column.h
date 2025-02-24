@@ -71,8 +71,10 @@ solid_problem->addGraphic("disp-A", DISPLACEMENT, Y, "p1");
 solid_problem->solveTransientProblem();
 
 // Chama a função para abrir o ParaView com o arquivo VTU
-//std::string pastaArquivos = "/home/pcv_180172/SilvioVeras/CPP/Geodude2D/build/Debug/results/solidOutput..vtu";
-//solid_problem->abrirParaView(SolidDomain::ParaViewInitMode::OPEN_FILE, pastaArquivos);
+std::string pastaArquivos = "/home/pcv_180172/SilvioVeras/CPP/Geodude2D/build/Debug/results/solidOutput..vtu";
+solid_problem->abrirParaView(SolidDomain::ParaViewInitMode::OPEN_FILE, pastaArquivos);
+
+
 
 //---opção para abrir o ParaView com um estado salvo----o estado precisar ser configurado manualmente 1 vez
 
@@ -81,5 +83,5 @@ solid_problem->solveTransientProblem();
 
 // opçaõ para abrir o ParaView com um script Python que inicializa o ParaView (trace) e faz a animação* ainda precisa de ajuste
 
-std::string pastaArquivos = "/home/pcv_180172/SilvioVeras/CPP/Geodude2D/build/Debug/results/solidOutput.py";
-solid_problem->abrirParaView(SolidDomain::ParaViewInitMode::EXE_SCRIPT, pastaArquivos);
+//std::string pastaArquivos = "/home/pcv_180172/SilvioVeras/CPP/Geodude2D/build/Debug/results/solidOutput.py";
+//solid_problem->abrirParaView(SolidDomain::ParaViewInitMode::EXE_SCRIPT, pastaArquivos);
